@@ -1,7 +1,7 @@
 {
   "name": "sticky-table-headers.js",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "Sticky table headers done right, with native JS & CSS",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
