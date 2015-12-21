@@ -63,8 +63,8 @@ Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
     - [Include as CommonJS Module](#include-as-commonjs-module)
     - [Include via HTML Script Tag](#include-via-html-script-tag)
 - [Usage](#usage)
-    - [Auto Initialization][#auto-initialization]
-    - [Manual Initialization][#manual-initialization]
+    - [Auto Initialization](#auto-initialization)
+    - [Manual Initialization](#manual-initialization)
 
 
 
