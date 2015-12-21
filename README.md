@@ -20,7 +20,7 @@ Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
 
 - **NPM:** `$ npm install --save sticky-table-headers.js`
 - **Bower:** `$ bower install --save sticky-table-headers.js`
-- [**Download:**](https://github.com/bsara/sticky-table-headers.js/releases)
+- [**Download**](https://github.com/bsara/sticky-table-headers.js/releases)
 
 
 ## Features
