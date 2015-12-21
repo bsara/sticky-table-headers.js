@@ -65,7 +65,7 @@ var config = {
            + '  });\n'
            + '  return ret;\n'
            + '})()',
-    namespace: 'StickyTableHeaders'
+    namespace: 'STH'
   }
 };
 

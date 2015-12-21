@@ -12,7 +12,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require, exports, module);
   } else {
-    root.StickyTableHeaders = factory();
+    root.STH = factory();
   }
 }(this, function(require, exports, module) {
 

@@ -46,20 +46,135 @@
 <p><a href="https://www.npmjs.com/package/sticky-table-headers.js"><img src="https://img.shields.io/npm/v/sticky-table-headers.js.svg?style=flat-square" alt="NPM Package"></a>&nbsp;
 <a href="http://bower.io/search/?q=sticky-table-headers.js"><img src="https://img.shields.io/bower/v/sticky-table-headers.js.svg?style=flat-square" alt="Bower Package"></a></p>
 <p><a href="https://gitter.im/bsara/sticky-table-headers.js"><img src="https://badges.gitter.im/JOIN%20CHAT.svg" alt="Gitter Chat"></a></p>
-<p>Sticky table headers done right, with native JS and CSS!</p>
-<p><strong>TODO: Finish Description</strong></p>
+<p>Sticky table headers done right, with native JS and CSS, no extra libraries needed. This is a super easy-to-use library that can be used without writing a single bit of JavaScript yourself!</p>
+<p>Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.</p>
 <h2 id="install">Install</h2>
 <ul>
 <li><strong>NPM:</strong> <code>$ npm install --save sticky-table-headers.js</code></li>
 <li><strong>Bower:</strong> <code>$ bower install --save sticky-table-headers.js</code></li>
 <li><a href="https://github.com/bsara/sticky-table-headers.js/releases"><strong>Download:</strong></a></li>
 </ul>
-<h2 id="documentation">Documentation</h2>
+<h2 id="features">Features</h2>
+<ul>
+<li>Built with fully native, pure JavaScript and CSS! No extra libraries needed!</li>
+<li>Super lightweight! (Only 6.484 kB minified)</li>
+<li>No additional HTML tag creation...so that the DOM elements you expect, are always going to be the DOM elements that you have.</li>
+<li>No additional JavaScript necessary for usage! (Perfect for single page applications or static sites)<ul>
+<li>Uses HTML tag <code>class</code> attribute to indicate tables with sticky headers.</li>
+</ul>
+</li>
+<li><a href="http://jsbin.com/lizoyaw/edit?html,output" title="Auto Init Example (JSBin)">Auto initilaization version</a> available for simple uses, and a <a href="http://jsbin.com/fuxuro/edit?html,js,output" title="Manual Init Example (JSBin)">manual initialization version</a> available for more complicated uses.</li>
+<li>Allows for table resizing even after you&#39;ve begun scrolling through table.</li>
+<li>Automatically finds first scrollable parent element, so that you don&#39;t have to!</li>
+<li>Ability to manually specify scrollable parent element.</li>
+<li>Support for...<ul>
+<li>AMD</li>
+<li>CommonJS</li>
+<li>Global HTML script tag</li>
+</ul>
+</li>
+</ul>
+<p><br/>
+<br/></p>
+<h1 id="documentation">Documentation</h1>
 <ul>
 <li><a href="https://github.com/bsara/sticky-table-headers.js/blob/master/CHANGELOG.md">Changelog</a></li>
 </ul>
-<h3 id="usage">Usage</h3>
-<p><strong><em>TODO</em></strong></p>
+<hr>
+<h3 id="table-of-contents">Table of Contents</h3>
+<ul>
+<li><a href="#code-samples">Code Samples</a></li>
+<li><a href="#including-the-library-auto-initialization-version-in-your-project">Including the Library Auto Initialization Version in Your Project</a><ul>
+<li><a href="#include-as-amd-module">Include as AMD Module</a></li>
+<li><a href="#include-as-commonjs-module">Include as CommonJS Module</a></li>
+<li><a href="#include-via-html-script-tag">Include via HTML Script Tag</a></li>
+</ul>
+</li>
+<li><a href="#including-the-library-manual-initialization-version-in-your-project">Including the Library Manual Initialization Version in Your Project</a><ul>
+<li><a href="#include-as-amd-module">Include as AMD Module</a></li>
+<li><a href="#include-as-commonjs-module">Include as CommonJS Module</a></li>
+<li><a href="#include-via-html-script-tag">Include via HTML Script Tag</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a><ul>
+<li>[Auto Initialization][#auto-initialization]</li>
+<li>[Manual Initialization][#manual-initialization]</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="code-samples">Code Samples</h2>
+<ul>
+<li><a href="http://jsbin.com/lizoyaw/edit?html,output" title="Auto Init Example (JSBin)">How to use without writing any JavaScript</a></li>
+<li><a href="http://jsbin.com/lizoyaw/edit?html,output" title="Auto Init Example (JSBin)">Auto Initialization</a></li>
+<li><a href="http://jsbin.com/fuxuro/edit?html,js,output" title="Manual Init Example (JSBin)">Manual Initialization</a></li>
+</ul>
+<hr>
+<h2 id="including-the-library-s-auto-initialization-version-in-your-project">Including the Library&#39;s Auto Initialization Version in Your Project</h2>
+<h4 id="include-as-amd-module">Include as AMD Module</h4>
+<pre><code class="lang-javascript">define([ &#39;sticky-table-headers.auto&#39; ], function(STH) {
+  ...
+});
+</code></pre>
+<h4 id="include-as-commonjs-module">Include as CommonJS Module</h4>
+<pre><code class="lang-javascript">var STH = require(&#39;sticky-table-headers.auto&#39;);
+...
+</code></pre>
+<h4 id="include-via-html-script-tag">Include via HTML Script Tag</h4>
+<pre><code class="lang-html">&lt;script type=&quot;text/javascript&quot; src=&quot;sticky-table-headers.auto.min.js&quot; /&gt;
+</code></pre>
+<hr>
+<h2 id="including-the-library-s-manual-initialization-version-in-your-project">Including the Library&#39;s Manual Initialization Version in Your Project</h2>
+<h4 id="include-as-amd-module">Include as AMD Module</h4>
+<pre><code class="lang-javascript">define([ &#39;sticky-table-headers&#39; ], function(STH) {
+  STH.manager.init();
+  ...
+});
+</code></pre>
+<h4 id="include-as-commonjs-module">Include as CommonJS Module</h4>
+<pre><code class="lang-javascript">var STH = require(&#39;sticky-table-headers&#39;);
+STH.manager.init();
+...
+</code></pre>
+<h4 id="include-via-html-script-tag">Include via HTML Script Tag</h4>
+<pre><code class="lang-html">&lt;script type=&quot;text/javascript&quot; src=&quot;sticky-table-headers.auto.min.js&quot; /&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+  ...
+  STH.manager.init();
+  ...
+&lt;/script&gt;
+</code></pre>
+<hr>
+<h2 id="usage">Usage</h2>
+<h3 id="auto-initialization">Auto Initialization</h3>
+<p>To use auto initialization, you must <a href="#including-the-library-auto-initialization-version-in-your-project">include the file <code>sticky-table-headers.auto.js</code>
+(or <code>sticky-table-headers.auto.min.js</code>) in your project</a>.
+This contains code that will automatically call <a href="http://bsara.github.io/sticky-table-headers.js/docs#sth-manager-init" title="StickyTableHeaderManager.prototype.init"><code>STH.manager.init()</code></a> once the
+page has finished loading.</p>
+<p>Because auto initialization takes place after the page has finished loading, <strong>if any
+additional tables requiring sticky headers are added after the page has loaded, they
+will not automatically be loaded</strong> by the library**. You can, however, call
+<a href="http://bsara.github.io/sticky-table-headers.js/docs#sth-manager-reinit" title="StickyTableHeaderManager.prototype.reinit"><code>STH.manager.reinit()</code></a> if you don&#39;t want to manually locate each new table and add
+it to the <code>STH.manager</code> object (though it would be much more performant to add each
+table one by one to <code>STH.manager</code>, see the <a href="http://bsara.github.io/sticky-table-headers.js/docs#sth-manager" title="StickyTableHeaderManager Object Definition"><code>STH.manager</code></a> docs for more details).</p>
+<p><strong>Auto Initialization in Action:</strong> <a href="http://jsbin.com/lizoyaw/edit?html,output" title="Auto Init Example (JSBin)">JSBin Code Example</a></p>
+<h3 id="manual-initialization">Manual Initialization</h3>
+<p>Manually initializing the sticky headers is available if you want to specify exactly
+when to initialize all sticky headers, or if you don&#39;t want to use the <a href="http://bsara.github.io/sticky-table-headers.js/docs#global-manager" title="Global Sticky Table Headers Manager">manager</a> at
+all.</p>
+<p>To manually initialize <strong>ALL</strong> sticky table headers found on a page, simply call
+<a href="http://bsara.github.io/sticky-table-headers.js/docs#sth-manager-init" title="StickyTableHeaderManager.prototype.init"><code>STH.manager.init()</code></a> after those tables have finished loading.</p>
+<p>To manually initialize sticky table headers for a single table, simply call
+<a href="http://bsara.github.io/sticky-table-headers.js/docs#sth-manager-add" title="StickyTableHeaderManager.prototype.addStickyHeaderToTable"><code>STH.manager.addStickyHeaderToTable(tableElement, [scrollableElement])</code></a>
+after that the table has finished loading. If you don&#39;t want to use the manager to manage
+your sticky header tables, you can also initialize a sticky table header by doing the
+following (See <a href="http://bsara.github.io/sticky-table-headers.js/docs#sth" title="StickyTableHeader Object Definition"><code>StickyTableHeader</code></a> for details):</p>
+<pre><code class="lang-javascript">var myStickyTableHeader = new StickyTableHeader(tableElement, scrollableElement)
+</code></pre>
+<p><strong>Manual Initialization in Action:</strong> <a href="http://jsbin.com/fuxuro/edit?html,js,output" title="Manual Init Example (JSBin)">JSBin Code Example</a></p>
+<p><br/></p>
+<hr>
+<p><br/></p>
 <h2 id="contributing">Contributing</h2>
 <p>See <a href="https://github.com/bsara/sticky-table-headers.js/blob/master/CONTRIBUTING.md">contribution documentation page</a> for details.</p>
 </article>
@@ -79,7 +194,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Dec 21 2015 13:49:16 GMT-0700 (MST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Dec 21 2015 15:07:45 GMT-0700 (MST)
 </footer>
 
 <script> prettyPrint(); </script>

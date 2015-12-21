@@ -38,10 +38,10 @@
   "scripts": {
     "test": "gulp dist"
   },
+  "main": "dist/sticky-table-headers.js",
   "files": [
     "/dist/*.js",
     "/dist/*.css",
-    "/docs/**/*",
     "/LICENSE",
     "/README.md"
   ],

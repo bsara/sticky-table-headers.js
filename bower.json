@@ -37,7 +37,6 @@
     "**/*",
     "!/dist/*.js",
     "!/dist/*.css",
-    "!/docs/**/*",
     "!/LICENSE",
     "!/README.md"
   ]
