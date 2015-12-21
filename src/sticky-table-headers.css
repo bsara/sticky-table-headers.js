@@ -1,0 +1,14 @@
+table.sth-sticky,
+table.sth-sticky * {
+  box-sizing: border-box;
+}
+
+
+table.sth-sticky {
+  position: relative;
+}
+
+
+table.sth-sticky thead.sth-sticky {
+  position: absolute;
+}

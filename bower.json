@@ -1,0 +1,44 @@
+{
+  "name": "sticky-table-headers.js",
+  "version": "0.0.1",
+  "description": "",
+  "authors": [
+    "Brandon Sara (http://bsara.github.io)"
+  ],
+  "license": "CPOL-1.02",
+  "homepage": "https://github.com/bsara/sticky-table-headers.js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bsara/sticky-table-headers.js.git"
+  },
+  "keywords": [
+    "stick",
+    "sticky",
+    "table",
+    "tables",
+    "header",
+    "headers",
+    "heading",
+    "headings",
+    "stickyheader",
+    "stickyheaders",
+    "stickyheading",
+    "stickyheadings",
+    "stickytableheader",
+    "stickytableheaders",
+    "stickytableheading",
+    "stickytableheadings"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "main": "/dist/sticky-table-headers.min.js",
+  "ignore": [
+    "**/*",
+    "!/dist/*.js",
+    "!/dist/*.css",
+    "!/docs/**/*",
+    "!/LICENSE",
+    "!/README.md"
+  ]
+}
