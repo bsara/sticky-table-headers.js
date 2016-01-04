@@ -1,3 +1,3 @@
-## [v0.0.1](https://github.com/bsara/stickytableheaders.js/tree/v0.0.1) (2015-??-??)
+## [v0.1.0](https://github.com/bsara/stickytableheaders.js/tree/v0.1.0) (2015-12-21)
 
 * Initial Release
