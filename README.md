@@ -26,7 +26,7 @@ Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
 ## Features
 
 - Built with fully native, pure JavaScript and CSS! No extra libraries needed!
-- Super lightweight! (Only 6.484 kB minified)
+- Super lightweight! (Only ~7 kB minified)
 - No additional HTML tag creation...so that the DOM elements you expect, are always going to be the DOM elements that you have.
 - No additional JavaScript necessary for usage! (Perfect for single page applications or static sites)
     - Uses HTML tag `class` attribute to indicate tables with sticky headers.
