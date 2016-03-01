@@ -50,11 +50,23 @@ var config = {
     exports: '(function() {\n'
            + '  var ret = {};\n'
            + '  Object.defineProperties(ret, {\n'
+           + '    disableStickyTableHeader: {\n'
+           + '      configurable: false,\n'
+           + '      enumerable:   true,\n'
+           + '      writable:     false,\n'
+           + '      value:        disableStickyTableHeader\n'
+           + '    },\n'
+           + '    enableStickyTableHeader: {\n'
+           + '      configurable: false,\n'
+           + '      enumerable:   true,\n'
+           + '      writable:     false,\n'
+           + '      value:        enableStickyTableHeader\n'
+           + '    },\n'
            + '    manager: {\n'
            + '      configurable: false,\n'
            + '      enumerable:   true,\n'
            + '      writable:     false,\n'
-           + '      value:        new StickyTableHeaderManager()\n'
+           + '      value:        _globalSTHManager\n'
            + '    },\n'
            + '    StickyTableHeader: {\n'
            + '      configurable: false,\n'
@@ -126,7 +138,8 @@ gulp.task('build', function() {
   var manualInitScripts = gulp.src([
                                 path.join(config.src.dir, '_sth.js'),
                                 path.join(config.src.dir, 'sticky-table-header.js'),
-                                path.join(config.src.dir, 'sticky-table-header-manager.js')
+                                path.join(config.src.dir, 'sticky-table-header-manager.js'),
+                                path.join(config.src.dir, 'enable-disable.js')
                               ])
                               .pipe(concat('sticky-table-headers.js'));
 
@@ -134,6 +147,7 @@ gulp.task('build', function() {
                                 path.join(config.src.dir, '_sth.js'),
                                 path.join(config.src.dir, 'sticky-table-header.js'),
                                 path.join(config.src.dir, 'sticky-table-header-manager.js'),
+                                path.join(config.src.dir, 'enable-disable.js'),
                                 path.join(config.src.dir, 'auto-init.js')
                               ])
                               .pipe(concat('sticky-table-headers.auto-init.js'));

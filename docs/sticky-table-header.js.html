@@ -28,192 +28,337 @@
             <pre class="prettyprint source linenums"><code>/* exported StickyTableHeader */
 
 
-var StickyTableHeader = (function() {
-
-  /**
-   * TODO: Add description
-   *
-   * @constructor
-   *
-   * @param {HTMLElement} tableElement - The table to add a sticky header to.
-   * @param {HTMLElement} [scrollableElement] - The scrollable element containing the given `tableElement`.
-   *
-   * @throws {TypeError} Thrown if `tableElement` is `undefined` or `null`.
-   */
-  function StickyTableHeader(tableElement, scrollableElement) {
-    if (tableElement == null) {
-      throw new TypeError("`tableElement` is a required parameter!");
-    }
-
-    if (this.constructor !== StickyTableHeader) {
-      return new StickyTableHeader(tableElement, scrollableElement);
-    }
-
-
-    Object.defineProperties(this, {
-      /**
-       * @type {Object}
-       * @private
-       */
-      _onChangeTableChildrenObserver: {
-        configurable: true,
-        enumerable:   false,
-        writable:     true,
-        value:        undefined
-      },
-
-      /**
-       * @type {Object}
-       * @private
-       */
-      _onChangeTableScrollableElementSelectorObserver: {
-        configurable: true,
-        enumerable:   false,
-        writable:     true,
-        value:        undefined
-      },
-
-
-      /**
-       * @type {Function}
-       * @private
-       */
-      _onChange: {
-        configurable: false,
-        enumerable:   false,
-        writable:     false,
-        value:        _onChange.bind(this)
-      }
-    });
-
-
-    /** @type {HTMLElement} */ this.$table       = tableElement;
-    /** @type {HTMLElement} */ this.$tableHeader = undefined;
-    /** @type {HTMLElement} */ this.$scrollable  = undefined;
-
-
-
-    if (!this.$table.classList.contains(_sth.constants.CSS_CLASS_NAME)) {
-      this.$table.classList.add(_sth.constants.CSS_CLASS_NAME);
-    }
-
-    _setTableHeader.call(this, this.$table.querySelector('thead'));
-
-    if (scrollableElement == null) {
-      _setScrollableElementWithSelector.call(this);
-    } else {
-      _setScrollableElement.call(this, scrollableElement);
-    }
-
-
-    this._onChangeTableChildrenObserver = new MutationObserver(_onChangeTableChildren.bind(this));
-    this._onChangeTableChildrenObserver.observe(this.$table, { childList: true });
-
-    this._onChangeTableScrollableElementSelectorObserver = new MutationObserver(_onChangeTableScrollableElementSelector.bind(this));
-    this._onChangeTableScrollableElementSelectorObserver.observe(this.$table, { attributes: true });
+/**
+ * TODO: Add description
+ *
+ * @constructor
+ *
+ * @param {HTMLElement} tableElement - The table to add a sticky header to.
+ * @param {HTMLElement} [scrollableElement] - The scrollable element containing the given `tableElement`.
+ *
+ * @throws {ReferenceError} If `tableElement` is `null` or `undefined`.
+ */
+function StickyTableHeader(options, scrollableElement) {
+  if (this.constructor !== StickyTableHeader) {
+    return new StickyTableHeader(options, scrollableElement);
   }
 
 
 
+  /** @type {MutationObserver}
+   * @private
+   */
+  var _onChangeTableChildrenObserver;
+
+  /**
+   * @type {MutationObserver}
+   * @private
+   */
+  var _onChangeTableScrollableElementSelectorObserver;
+
+  /**
+   * @type {Function}
+   * @private
+   */
+  var _onChange;
+
+  /**
+   * @type {Function}
+   * @private
+   */
+  var _onChangeTableChildren;
+
+  /**
+   * @type {Function}
+   * @private
+   */
+  var _onChangeTableScrollableElementSelector;
+
+  /**
+   * @type {!Boolean}
+   * @private
+   */
+  var _includeCaption;
+
+  /**
+   * @type {HTMLElement}
+   * @private
+   */
+  var _$scrollable;
+
+  /**
+   * @type {HTMLElement}
+   * @private
+   */
+  var _$table;
+
+  /**
+   * @type {?HTMLElement}
+   * @private
+   */
+  var _$tableCaption;
+
+  /**
+   * @type {HTMLElement}
+   * @private
+   */
+  var _$tableHeader;
+
+
+
+
+  /**
+   * @constructs {StickyTableHeader}
+   * @private
+   */
+  ;(function ctor() {
+    // region Public Functions
+
+    this.destroy = destroy.bind(this);
+
+    Object.defineProperties(this, {
+      /** @type {!Boolean} */
+      includeCaption: {
+        get: _includeCaptionGetter,
+        set: _includeCaptionSetter
+      },
+
+      /** @type {HTMLElement} */
+      $scrollable: {
+        get: _$scrollableGetter,
+        set: _$scrollableSetter
+      },
+
+      /** @type {HTMLElement} */
+      $table: {
+        get: _$tableGetter,
+        set: _$tableSetter
+      }
+    });
+
+    // endregion
+
+    // region Event Handler Function Bindings
+
+    _onChange                               = _onChangeHandler.bind(this);
+    _onChangeTableChildren                  = _onChangeTableChildrenHandler.bind(this);
+    _onChangeTableScrollableElementSelector = _onChangeTableScrollableElementSelectorHandler.bind(this);
+
+    // endregion
+
+
+    options = (options || {});
+
+    if (options instanceof HTMLElement) {
+      options = { tableElement: options };
+    }
+
+
+    this.includeCaption = options.includeCaption;
+
+    this.$table      = options.tableElement;
+    this.$scrollable = (scrollableElement || options.scrollableElement);
+
+
+    _onChangeTableChildrenObserver = new MutationObserver(_onChangeTableChildren);
+    _onChangeTableChildrenObserver.observe(this.$table, { childList: true });
+
+    _onChangeTableScrollableElementSelectorObserver = new MutationObserver(_onChangeTableScrollableElementSelector);
+    _onChangeTableScrollableElementSelectorObserver.observe(this.$table, { attributes: true });
+  }).call(this);
+
+
+
+
   /**
    * TODO: Add description
    */
-  StickyTableHeader.prototype.destroy = function() {
-    this._onChangeTableChildrenObserver.disconnect();
-    this._onChangeTableScrollableElementSelectorObserver.disconnect();
+  function destroy() {
+    _onChangeTableChildrenObserver.disconnect();
+    _onChangeTableScrollableElementSelectorObserver.disconnect();
 
 
-    _sth.helpers.removeEventListener(window, 'resize', this._onChange);
+    _sth.helpers.removeEventListener(window, 'resize', _onChange);
 
     if (this.$scrollable != null) {
-      _sth.helpers.removeEventListener(this.$scrollable, 'scroll', this._onChange);
+      _sth.helpers.removeEventListener(this.$scrollable, 'scroll', _onChange);
     }
 
 
     this.$table.classList.remove(_sth.constants.CSS_CLASS_NAME);
 
-    if (this.$tableHeader != null) {
-      this.$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
+    if (_$tableHeader != null) {
+      _$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
     }
 
 
-    delete this.$table;
-    delete this.$tableHeader;
-    delete this.$scrollable;
-    delete this._onChangeTableChildrenObserver;
-    delete this._onChangeTableScrollableElementSelectorObserver;
-    delete this._onChange;
-  };
+    _onChangeTableChildrenObserver                  = undefined;
+    _onChangeTableScrollableElementSelectorObserver = undefined;
+
+    _$table       = undefined;
+    _$scrollable  = undefined;
+    _$tableHeader = undefined;
+  }
 
 
   /** @private */
-  var _setTableHeader = function(tableHeaderElement) {
-    this.$tableHeader = tableHeaderElement;
+  function _includeCaptionGetter() {
+    return _includeCaption;
+  }
 
-    if (this.$tableHeader != null) {
-      // TODO: Implement
+
+  /** @private */
+  function _includeCaptionSetter(includeCaption) {
+    _includeCaption = (includeCaption === true);
+  }
+
+
+  /** @private */
+  function _$tableGetter() {
+    return _$table;
+  }
+
+
+  /** @private */
+  function _$tableSetter(tableElement) {
+    if (tableElement == null) {
+      throw new ReferenceError("`$table` cannot be `null` or `undefined`.");
     }
-  };
+
+    _$table = tableElement;
+
+    if (!_$table.classList.contains(_sth.constants.CSS_CLASS_NAME)) {
+      _$table.classList.add(_sth.constants.CSS_CLASS_NAME);
+    }
+
+    _setTableCaption.call(this, _$table.querySelector('caption'));
+    _setTableHeader.call(this, _$table.querySelector('thead'));
+  }
 
 
   /** @private */
-  var _setScrollableElementWithSelector = function() {
+  function _$scrollableGetter() {
+    return _$scrollable;
+  }
+
+
+  /** @private */
+  function _$scrollableSetter(scrollableElement) {
+    if (scrollableElement == null) {
+      _setScrollableElementWithSelector.call(this);
+    } else {
+      _setScrollableElementWithElement.call(this, scrollableElement);
+    }
+
+    if (_$scrollable == null) {
+      _setScrollableElementWithElement.call(this, _findScrollableParent(this.$table));
+    }
+  }
+
+
+  /** @private */
+  function _setScrollableElementWithElement(scrollableElement) {
+    if (scrollableElement === _$scrollable) {
+      return;
+    }
+
+
+    if (_$scrollable != null) {
+      _sth.helpers.removeEventListener(_$scrollable, 'scroll', _onChange);
+      _sth.helpers.removeEventListener(window, 'resize', _onChange);
+    }
+
+    _$scrollable = scrollableElement;
+
+    if (_$scrollable != null) {
+      _sth.helpers.addEventListener(_$scrollable, 'scroll', _onChange);
+      _sth.helpers.addEventListener(window, 'resize', _onChange);
+    }
+  }
+
+
+  /** @private */
+  function _setScrollableElementWithSelector() {
     var scrollableElementSelector = this.$table.getAttribute(_sth.constants.SCROLLABLE_ELEMENT_SELECTOR_ATTR_NAME);
 
     if (scrollableElementSelector != null
           &amp;&amp; typeof scrollableElementSelector === 'string'
           &amp;&amp; scrollableElementSelector.trim()) {
-      _setScrollableElement.call(this, document.querySelector(scrollableElementSelector.trim()));
+      _setScrollableElementWithElement.call(this, document.querySelector(scrollableElementSelector.trim()));
     }
-
-    if (this.$scrollable == null) {
-      _setScrollableElement.call(this, this.$table.parentNode);
-    }
-  };
+  }
 
 
   /** @private */
-  var _setScrollableElement = function(scrollableElement) {
-    this.$scrollable = scrollableElement;
-
-    if (this.$scrollable != null) {
-      _sth.helpers.addEventListener(this.$scrollable, 'scroll', this._onChange);
-      _sth.helpers.addEventListener(window, 'resize', this._onChange);
-      return;
+  function _findScrollableParent($el) {
+    if ($el.parentNode == null) {
+      return $el;
     }
 
-    _sth.helpers.removeEventListener(window, 'resize', this._onChange);
-  };
+    var $parent             = $el.parentNode;
+    var parentComputedStyle = getComputedStyle($parent);
+
+    switch (parentComputedStyle.overflowY) {
+      case 'auto':
+      case 'scroll':
+        return $parent;
+    }
+
+    return _findScrollableParent($parent);
+  }
 
 
   /** @private */
-  var _onChange = function() {
-    if (this.$tableHeader == null) {
+  function _setTableCaption(tableCaptionElement) {
+    _$tableCaption = tableCaptionElement;
+  }
+
+
+  /** @private */
+  function _setTableHeader(tableHeaderElement) {
+    _$tableHeader = tableHeaderElement;
+  }
+
+
+  /** @private */
+  function _onChangeHandler() {
+    if (_$tableHeader == null) {
       return;
     }
 
 
-    var scrollableElementTop = this.$scrollable.getBoundingClientRect().top;
+    var scrollableElementTop = Math.floor(this.$scrollable.getBoundingClientRect().top);
+    var scrollingThreshold   = Math.floor(this.$table.getBoundingClientRect().top);
 
-    if (this.$table.getBoundingClientRect().top &lt; scrollableElementTop) {
-      var tableDimens = this.$table.getBoundingClientRect();
+    if (!this.includeCaption &amp;&amp; _$tableCaption != null) {
+      scrollingThreshold += (Math.floor(_$tableCaption.getBoundingClientRect().height)
+                              + _sth.helpers.removeUnit(getComputedStyle(_$tableCaption).getPropertyValue('marginBottom')));
+    }
 
-      var tableLeftBorderWidth = _sth.helpers.removeUnit(window.getComputedStyle(this.$table, null).getPropertyValue('border-left-width'));
+    if (!this.includeCaption || _$tableCaption == null) {
+      scrollingThreshold += _sth.helpers.removeUnit(getComputedStyle(_$tableHeader).getPropertyValue('marginTop'));
+    }
 
-      var tableHeaderComputedStyle    = window.getComputedStyle(this.$tableHeader, null);
+
+    if (scrollingThreshold &lt;= scrollableElementTop) {
+      var tableHeaderDimens = _$tableHeader.getBoundingClientRect();
+
+      var tableLeftBorderWidth = _sth.helpers.removeUnit(getComputedStyle(this.$table).getPropertyValue('border-left-width'));
+
+      var tableHeaderComputedStyle    = getComputedStyle(_$tableHeader);
       var tableHeaderTopBorderWidth   = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-top-width'));
       var tableHeaderLeftBorderWidth  = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-left-width'));
       var tableHeaderRightBorderWidth = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-right-width'));
 
-      this.$tableHeader.style.top   = scrollableElementTop - tableDimens.top + tableHeaderTopBorderWidth + 'px';
-      this.$tableHeader.style.left  = tableHeaderLeftBorderWidth - tableLeftBorderWidth + 'px';
-      this.$tableHeader.style.width = 'calc(100% + ' + tableHeaderRightBorderWidth + 'px)';
+      _$tableHeader.style.top   = ((scrollableElementTop - tableHeaderDimens.top + tableHeaderTopBorderWidth) + 'px');
+      _$tableHeader.style.left  = ((tableHeaderLeftBorderWidth - tableLeftBorderWidth) + 'px');
+      _$tableHeader.style.width = ('calc(100% + ' + tableHeaderRightBorderWidth + 'px)');
 
 
-      var tableHeaderCells              = this.$tableHeader.querySelectorAll('th');
+      var tableHeaderCells              = _$tableHeader.querySelectorAll('th');
       var tableBodyFirstRowCells        = this.$table.querySelectorAll('tbody > tr td');
       var tableBodyFirstRowCellsIsEmpty = (tableBodyFirstRowCells == null || tableBodyFirstRowCells.length === 0);
-      var equalWidthAmount              = (100 / tableHeaderCells.length) + '%';
+      var equalWidthAmount              = ((100 / tableHeaderCells.length) + '%');
 
       for (var i = 0; i &lt; tableHeaderCells.length; i++) {
         var $tableHeaderCell = tableHeaderCells[i];
@@ -223,21 +368,21 @@ var StickyTableHeader = (function() {
           continue;
         }
 
-        $tableHeaderCell.style.width = window.getComputedStyle(tableBodyFirstRowCells[i], undefined).getPropertyValue('width');
+        $tableHeaderCell.style.width = getComputedStyle(tableBodyFirstRowCells[i]).getPropertyValue('width');
       }
 
-      this.$tableHeader.classList.add(_sth.constants.CSS_CLASS_NAME);
+      _$tableHeader.classList.add(_sth.constants.CSS_CLASS_NAME);
 
       return;
     }
 
-    this.$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
-    this.$tableHeader.removeAttribute('style');
-  };
+    _$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
+    _$tableHeader.removeAttribute('style');
+  }
 
 
   /** @private */
-  var _onChangeTableChildren = function(mutations) {
+  function _onChangeTableChildrenHandler(mutations) {
     mutations.forEach(function(mutation) {
       var i;
 
@@ -255,22 +400,18 @@ var StickyTableHeader = (function() {
         }
       }
     });
-  };
+  }
 
 
   /** @private */
-  var _onChangeTableScrollableElementSelector = function(mutations) {
+  function _onChangeTableScrollableElementSelectorHandler(mutations) {
     mutations.forEach(function(mutation) {
       if (mutation.attributeName === _sth.constants.SCROLLABLE_ELEMENT_SELECTOR_ATTR_NAME) {
         _setScrollableElementWithSelector.call(this);
       }
     });
-  };
-
-
-
-  return StickyTableHeader;
-})();
+  }
+}
 </code></pre>
         </article>
     </section>
@@ -281,13 +422,13 @@ var StickyTableHeader = (function() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="StickyTableHeader.html">StickyTableHeader</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Dec 21 2015 15:07:45 GMT-0700 (MST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Feb 29 2016 18:48:49 GMT-0700 (MST)
 </footer>
 
 <script> prettyPrint(); </script>
