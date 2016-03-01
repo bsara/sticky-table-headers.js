@@ -61,6 +61,7 @@
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "gulp-wrap-umd": "latest",
+    "jshint": "latest",
     "jshint-stylish": "latest",
     "merge-stream": "latest",
     "path": "latest",
