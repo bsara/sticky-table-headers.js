@@ -425,7 +425,10 @@ function StickyTableHeader(options, scrollableElement) {
         _setNewTopDimenForTopStickyElement(_$tableCaption, scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
         _setNewLeftRightDimensForStickyElement(_$tableCaption, tableCaptionComputedStyle);
 
-        _$tableHeader.style.top = ((tableCaptionDimens.bottom + tableCaptionMarginBottom + tableHeaderMarginTop) + 'px');
+        _$tableHeader.style.top = ((_sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('top'))
+                                    + tableCaptionDimens.height
+                                    + tableCaptionMarginBottom
+                                    + tableHeaderMarginTop) + 'px');
       } else {
         _setNewTopDimenForTopStickyElement(_$tableHeader, scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
       }
