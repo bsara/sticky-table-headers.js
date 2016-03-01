@@ -1,15 +1,29 @@
 /* exported StickyTableHeader */
 
 
+
+/**
+ * @typedef {Object} StickyTableHeaderOptions
+ * @property {HTMLElement} tableElement           - The table element to add a sticky header to.
+ * @property {HTMLElement} [scrollableElement]    - The scrollable element containing the given `tableElement`.
+ * @property {Boolean}     [includeCaption=false] - If `true` and a `caption` element exists in the given
+ *                                                  table element, then the `caption` element will be sticky
+ *                                                  along with the `thead` element of the given table element.
+ */
+
+
+
 /**
  * TODO: Add description
  *
- * @constructor
- *
- * @param {HTMLElement} tableElement - The table to add a sticky header to.
+ * @param {(HTMLElement|StickyTableHeaderOptions)} tableElement|options - The table element to add a sticky
+ *                                                                        header to or the options used to
+ *                                                                        setup this object.
  * @param {HTMLElement} [scrollableElement] - The scrollable element containing the given `tableElement`.
  *
- * @throws {ReferenceError} If `tableElement` is `null` or `undefined`.
+ * @throws {ReferenceError} If `tableElement` and `options.tableElement` are `null` or `undefined`.
+ *
+ * @constructor
  */
 function StickyTableHeader(options, scrollableElement) {
   if (this.constructor !== StickyTableHeader) {
@@ -300,16 +314,30 @@ function StickyTableHeader(options, scrollableElement) {
     }
 
 
+    var captionExists = (_$tableCaption != null);
+
     var scrollableElementTop = Math.floor(this.$scrollable.getBoundingClientRect().top);
     var scrollingThreshold   = Math.floor(this.$table.getBoundingClientRect().top);
 
-    if (!this.includeCaption && _$tableCaption != null) {
-      scrollingThreshold += (Math.floor(_$tableCaption.getBoundingClientRect().height)
-                              + _sth.helpers.removeUnit(getComputedStyle(_$tableCaption).getPropertyValue('marginBottom')));
+    var tableHeaderComputedStyle = getComputedStyle(_$tableHeader);
+    var tableHeaderMarginTop     = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('marginTop'));
+
+    var tableCaptionComputedStyle;
+    var tableCaptionDimens;
+    var tableCaptionMarginBottom;
+
+
+    if (captionExists && !this.includeCaption) {
+      tableCaptionDimens        = _$tableCaption.getBoundingClientRect();
+      tableCaptionComputedStyle = getComputedStyle(_$tableCaption);
+      tableCaptionMarginBottom  = _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('marginBottom'));
+
+      scrollingThreshold += (Math.floor(tableCaptionDimens.height) + tableCaptionMarginBottom);
     }
 
-    if (!this.includeCaption || _$tableCaption == null) {
-      scrollingThreshold += _sth.helpers.removeUnit(getComputedStyle(_$tableHeader).getPropertyValue('marginTop'));
+    if (!captionExists || !this.includeCaption) {
+
+      scrollingThreshold += tableHeaderMarginTop;
     }
 
 
@@ -318,14 +346,33 @@ function StickyTableHeader(options, scrollableElement) {
 
       var tableLeftBorderWidth = _sth.helpers.removeUnit(getComputedStyle(this.$table).getPropertyValue('border-left-width'));
 
-      var tableHeaderComputedStyle    = getComputedStyle(_$tableHeader);
-      var tableHeaderTopBorderWidth   = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-top-width'));
-      var tableHeaderLeftBorderWidth  = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-left-width'));
-      var tableHeaderRightBorderWidth = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-right-width'));
 
-      _$tableHeader.style.top   = ((scrollableElementTop - tableHeaderDimens.top + tableHeaderTopBorderWidth) + 'px');
-      _$tableHeader.style.left  = ((tableHeaderLeftBorderWidth - tableLeftBorderWidth) + 'px');
-      _$tableHeader.style.width = ('calc(100% + ' + tableHeaderRightBorderWidth + 'px)');
+      if (captionExists && this.includeCaption) {
+        _setNewTopDimenForTopStickyElement(_$tableCaption,
+                                           scrollableElementTop,
+                                           tableCaptionDimens.top,
+                                           _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('border-top-width')));
+
+        _setNewLeftRightDimensForStickyElement(_$tableCaption, tableLeftBorderWidth, {
+          left:  _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('border-left-width')),
+          right: _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('border-right-width'))
+        });
+
+        _$tableHeader.style.top = ((tableCaptionDimens.top
+                                      + tableCaptionDimens.height
+                                      + tableCaptionMarginBottom
+                                      + tableHeaderMarginTop) + 'px');
+      } else {
+        _setNewTopDimenForTopStickyElement(_$tableHeader,
+                                           scrollableElementTop,
+                                           tableHeaderDimens.top,
+                                           _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-top-width')));
+      }
+
+      _setNewLeftRightDimensForStickyElement(_$tableHeader, tableLeftBorderWidth, {
+        left:  _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-left-width')),
+        right: _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-right-width'))
+      });
 
 
       var tableHeaderCells              = _$tableHeader.querySelectorAll('th');
@@ -351,6 +398,19 @@ function StickyTableHeader(options, scrollableElement) {
 
     _$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
     _$tableHeader.removeAttribute('style');
+  }
+
+
+  /** @private */
+  function _setNewTopDimenForTopStickyElement($el, scrollableElementTop, elTop, elBorderTopWidth) {
+    $el.style.top = ((scrollableElementTop - elTop + elBorderTopWidth) + 'px');
+  }
+
+
+  /** @private */
+  function _setNewLeftRightDimensForStickyElement($el, tableLeftBorderWidth, elBorderWidths) {
+    $el.style.left  = ((elBorderWidths.left - tableLeftBorderWidth) + 'px');
+    $el.style.width = ('calc(100% + ' + elBorderWidths.right + 'px)');
   }
 
 
