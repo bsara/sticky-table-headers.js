@@ -9,6 +9,7 @@ table.sth-sticky {
 }
 
 
+table.sth-sticky caption.sth-sticky,
 table.sth-sticky thead.sth-sticky {
   position: absolute;
 }

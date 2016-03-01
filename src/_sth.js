@@ -14,8 +14,8 @@ var _sth = {
    * @readonly
    */
   constants: {
-    CSS_CLASS_NAME                        : 'sth-sticky',
-    SCROLLABLE_ELEMENT_SELECTOR_ATTR_NAME : 'data-sth-scrollable-selector'
+    CSS_CLASS_NAME:                        'sth-sticky',
+    SCROLLABLE_ELEMENT_SELECTOR_ATTR_NAME: 'data-sth-scrollable-selector'
   },
 
 

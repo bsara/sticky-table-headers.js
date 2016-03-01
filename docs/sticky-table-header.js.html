@@ -95,6 +95,12 @@ function StickyTableHeader(options, scrollableElement) {
   var _includeCaption;
 
   /**
+   * @type {Object[]}
+   * @private
+   */
+  var _origHeaderStyleWidths;
+
+  /**
    * @type {HTMLElement}
    * @private
    */
@@ -167,6 +173,8 @@ function StickyTableHeader(options, scrollableElement) {
       options = { tableElement: options };
     }
 
+
+    _origHeaderStyleWidths = [];
 
     this.includeCaption = options.includeCaption;
 
@@ -343,101 +351,156 @@ function StickyTableHeader(options, scrollableElement) {
 
     var captionExists = (_$tableCaption != null);
 
-    var scrollableElementTop = Math.floor(this.$scrollable.getBoundingClientRect().top);
-    var scrollingThreshold   = Math.floor(this.$table.getBoundingClientRect().top);
-
-    var tableHeaderComputedStyle = getComputedStyle(_$tableHeader);
-    var tableHeaderMarginTop     = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('marginTop'));
+    var tablePositionTop = this.$table.getBoundingClientRect().top;
 
     var tableCaptionComputedStyle;
     var tableCaptionDimens;
     var tableCaptionMarginBottom;
 
+    var tableHeaderCells         = _$tableHeader.querySelectorAll('th');
+    var tableHeaderComputedStyle = getComputedStyle(_$tableHeader);
+    var tableHeaderMarginTop     = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('margin-top'));
 
-    if (captionExists &amp;&amp; !this.includeCaption) {
-      tableCaptionDimens        = _$tableCaption.getBoundingClientRect();
+    var scrollableElementBorderTopWidth = _sth.helpers.removeUnit(getComputedStyle(this.$scrollable).getPropertyValue('border-top-width'));
+    var scrollableElementTop            = this.$scrollable.getBoundingClientRect().top;
+    var scrollingThreshold              = tablePositionTop;
+
+
+    if (captionExists) {
       tableCaptionComputedStyle = getComputedStyle(_$tableCaption);
-      tableCaptionMarginBottom  = _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('marginBottom'));
+      tableCaptionDimens        = _$tableCaption.getBoundingClientRect();
+      tableCaptionMarginBottom  = _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('margin-bottom'));
 
-      scrollingThreshold += (Math.floor(tableCaptionDimens.height) + tableCaptionMarginBottom);
+      scrollingThreshold += _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('margin-top'));
+
+      if (!this.includeCaption) {
+        scrollingThreshold += (tableCaptionDimens.height + tableCaptionMarginBottom);
+      }
     }
 
-    if (!captionExists || !this.includeCaption) {
-
+    if (!this.includeCaption) {
       scrollingThreshold += tableHeaderMarginTop;
     }
 
 
-    if (scrollingThreshold &lt;= scrollableElementTop) {
-      var tableHeaderDimens = _$tableHeader.getBoundingClientRect();
+    if (scrollingThreshold &lt; scrollableElementTop) {
+      if (captionExists &amp;&amp; this.includeCaption) {
+        _setNewTopDimenForTopStickyElement(_$tableCaption, scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
+        _setNewLeftRightDimensForStickyElement(_$tableCaption, tableCaptionComputedStyle);
 
-      var tableLeftBorderWidth = _sth.helpers.removeUnit(getComputedStyle(this.$table).getPropertyValue('border-left-width'));
+        _$tableHeader.style.top = ((tableCaptionDimens.bottom + tableCaptionMarginBottom + tableHeaderMarginTop) + 'px');
+      } else {
+        _setNewTopDimenForTopStickyElement(_$tableHeader, scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
+      }
+
+      _setNewLeftRightDimensForStickyElement(_$tableHeader, tableHeaderComputedStyle);
+
+
+      _processTableHeaderCells.call(this, tableHeaderCells);
 
 
       if (captionExists &amp;&amp; this.includeCaption) {
-        _setNewTopDimenForTopStickyElement(_$tableCaption,
-                                           scrollableElementTop,
-                                           tableCaptionDimens.top,
-                                           _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('border-top-width')));
-
-        _setNewLeftRightDimensForStickyElement(_$tableCaption, tableLeftBorderWidth, {
-          left:  _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('border-left-width')),
-          right: _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('border-right-width'))
-        });
-
-        _$tableHeader.style.top = ((tableCaptionDimens.top
-                                      + tableCaptionDimens.height
-                                      + tableCaptionMarginBottom
-                                      + tableHeaderMarginTop) + 'px');
-      } else {
-        _setNewTopDimenForTopStickyElement(_$tableHeader,
-                                           scrollableElementTop,
-                                           tableHeaderDimens.top,
-                                           _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-top-width')));
+        _$tableCaption.classList.add(_sth.constants.CSS_CLASS_NAME);
       }
-
-      _setNewLeftRightDimensForStickyElement(_$tableHeader, tableLeftBorderWidth, {
-        left:  _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-left-width')),
-        right: _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('border-right-width'))
-      });
-
-
-      var tableHeaderCells              = _$tableHeader.querySelectorAll('th');
-      var tableBodyFirstRowCells        = this.$table.querySelectorAll('tbody > tr td');
-      var tableBodyFirstRowCellsIsEmpty = (tableBodyFirstRowCells == null || tableBodyFirstRowCells.length === 0);
-      var equalWidthAmount              = ((100 / tableHeaderCells.length) + '%');
-
-      for (var i = 0; i &lt; tableHeaderCells.length; i++) {
-        var $tableHeaderCell = tableHeaderCells[i];
-
-        if (tableBodyFirstRowCellsIsEmpty) {
-          $tableHeaderCell.style.width = equalWidthAmount;
-          continue;
-        }
-
-        $tableHeaderCell.style.width = getComputedStyle(tableBodyFirstRowCells[i]).getPropertyValue('width');
-      }
-
       _$tableHeader.classList.add(_sth.constants.CSS_CLASS_NAME);
+
 
       return;
     }
 
-    _$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
-    _$tableHeader.removeAttribute('style');
+
+    if (captionExists &amp;&amp; this.includeCaption) {
+      _cleanupStickyElement(_$tableCaption);
+    }
+    _cleanupStickyElement(_$tableHeader);
+
+    _cleanupTableHeaderCellStyles(tableHeaderCells);
   }
 
 
   /** @private */
-  function _setNewTopDimenForTopStickyElement($el, scrollableElementTop, elTop, elBorderTopWidth) {
-    $el.style.top = ((scrollableElementTop - elTop + elBorderTopWidth) + 'px');
+  function _setNewTopDimenForTopStickyElement($el, scrollableElTop, scrollableElBorderTopWidth, tablePositionTop) {
+    $el.style.top = ((scrollableElTop - tablePositionTop + scrollableElBorderTopWidth) + 'px');
   }
 
 
   /** @private */
-  function _setNewLeftRightDimensForStickyElement($el, tableLeftBorderWidth, elBorderWidths) {
-    $el.style.left  = ((elBorderWidths.left - tableLeftBorderWidth) + 'px');
-    $el.style.width = ('calc(100% + ' + elBorderWidths.right + 'px)');
+  function _setNewLeftRightDimensForStickyElement($el, elComputedStyle) {
+    var elMarginRight      = _sth.helpers.removeUnit(elComputedStyle.getPropertyValue('margin-right'));
+    var elBorderRightWidth = _sth.helpers.removeUnit(elComputedStyle.getPropertyValue('border-right-width'));
+
+    $el.style.left  = elComputedStyle.getPropertyValue('margin-left');
+    $el.style.right = ((elMarginRight - elBorderRightWidth) + 'px');
+  }
+
+
+  /** @private */
+  function _processTableHeaderCells(tableHeaderCells) {
+    var tableBodyFirstRowCells        = this.$table.querySelectorAll('tbody > tr td');
+    var tableBodyFirstRowCellsIsEmpty = (tableBodyFirstRowCells == null || tableBodyFirstRowCells.length === 0);
+    var equalWidthAmount              = ((100 / tableHeaderCells.length) + '%');
+
+    var isFirstTimeThrough = (_origHeaderStyleWidths.length === 0);
+
+    for (var i = 0; i &lt; tableHeaderCells.length; i++) {
+      var $tableHeaderCell = tableHeaderCells[i];
+
+      if (isFirstTimeThrough) {
+        _origHeaderStyleWidths.push({
+          width:    $tableHeaderCell.style.getPropertyValue('width'),
+          priority: $tableHeaderCell.style.getPropertyPriority('width')
+        });
+      }
+
+      if (tableBodyFirstRowCellsIsEmpty) {
+        $tableHeaderCell.style.width = equalWidthAmount;
+        continue;
+      }
+
+
+      var expectedNewWidth = _sth.helpers.removeUnit(getComputedStyle(tableBodyFirstRowCells[i]).getPropertyValue('width'));
+
+
+      $tableHeaderCell.style.width = (expectedNewWidth + 'px');
+
+
+      var newWidth = $tableHeaderCell.getBoundingClientRect().width;
+
+      if (newWidth &lt; expectedNewWidth) {
+        $tableHeaderCell.style.width = ((expectedNewWidth + (expectedNewWidth - newWidth)) + 'px');
+      } else if (newWidth > expectedNewWidth) {
+        $tableHeaderCell.style.width = ((expectedNewWidth - (newWidth - expectedNewWidth)) + 'px');
+      }
+    }
+  }
+
+
+  /** @private */
+  function _cleanupStickyElement($el) {
+    $el.classList.remove(_sth.constants.CSS_CLASS_NAME);
+    $el.removeAttribute('style');
+  }
+
+
+  /** @private */
+  function _cleanupTableHeaderCellStyles(tableHeaderCells) {
+    if (_origHeaderStyleWidths.length === 0) {
+      return;
+    }
+
+    for (var i = 0; i &lt; tableHeaderCells.length; i++) {
+      var $tableHeaderCell = tableHeaderCells[i];
+      var origValues       = _origHeaderStyleWidths[i];
+
+      if (origValues.width == null) {
+        $tableHeaderCell.style.removeProperty('width');
+        continue;
+      }
+
+      $tableHeaderCell.style.setProperty('width', origValues.width, origValues.priority);
+    }
+
+    _origHeaderStyleWidths.splice(0, _origHeaderStyleWidths.length);
   }
 
 
@@ -488,7 +551,7 @@ function StickyTableHeader(options, scrollableElement) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Tue Mar 01 2016 11:41:42 GMT-0700 (MST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Tue Mar 01 2016 16:25:25 GMT-0700 (MST)
 </footer>
 
 <script> prettyPrint(); </script>
