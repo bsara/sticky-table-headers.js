@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+
+<div class="home">
+
+  <h1 class="page-heading">Pages</h1>
+
+  <ul class="post-list">
+    {% for page in site.docs %}
+      <li>
+        <span class="post-meta">{{ page.date | date: "%b %-d, %Y" }}</span>
+
+        <h2>
+          <a class="post-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+
+</div>

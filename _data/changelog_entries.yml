@@ -1,0 +1,30 @@
+- version:      0.2.0
+  release_date: 2016-03-01
+
+  features:
+    - desc:    "Added the ability to include table `caption` element as part of the sticky table header."
+      doc_url: "https://github.com/bsara/sticky-table-headers.js/blob/v0.2.0/src/sticky-table-header.js#L5-L28"
+
+    - desc: "Added functions to enable/disable sticky headers on table without using the manager and without initializing a new `StickyTableHeader` manually."
+      new_funcs:
+        - name:             "STH.enableStickyTableHeader"
+          src_relative_url: "src/enable-disable.js#L5-L28"
+
+        - name:             "STH.disableStickyTableHeader"
+          src_relative_url: "src/enable-disable.js#L32-L53"
+
+  bug_fixes:
+    - desc: "Fixed many styling issues related to widths of table header columns and sticky header general positioning."
+    - desc: "Fixed Travis CI build."
+
+  other_changes:
+    - desc: "Made code base more secure with truly private object properties."
+    - desc: "Code cleanup."
+
+
+
+- version:      0.1.0
+  release_date: 2015-12-21
+
+  other_changes:
+    - desc: "Initial Release"

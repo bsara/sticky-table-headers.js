@@ -1,0 +1,62 @@
+---
+title: Changelog
+date:  2016-03-01
+type:  changelog
+---
+
+
+{% for changelog_entry in site.data.changelog_entries %}
+
+  <article class="entry">
+
+    <header>
+      <h2>v{{ changelog_entry.version }}</h2>
+      <p class="info">Release Date: {{ changelog_entry.release_date }}</p>
+      <p class="links"><a href="{{ site.repo_base_url }}/tree/v{{ changelog_entry.version }}" target="_blank">Source</a> | <a href="/docs/v{{ changelog_entry.version }}">Docs</a></p>
+    </header>
+
+    <ul>
+
+      {% if changelog_entry.features != null %}
+        {% for feature in changelog_entry.features %}
+
+          <li>
+            <span>
+              <b>[New Feature]</b> {{ feature.desc }}{% if feature.doc_url != null %} (<a href="{{ feature.doc_url }}" target="_blank">docs</a>){% endif %}
+            </span>
+
+            {% if feature.new_funcs != null %}
+              <ul>
+                {% for new_func in feature.new_funcs %}
+                  <li><b>[New Function]</b>&nbsp;<a href="{{ site.src_base_url }}/v{{ changelog_entry.version }}/{{ new_func.src_relative_url }}" target="_blank"><code>{{ new_func.name }}</code></a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+
+        {% endfor %}
+      {% endif %}
+
+
+      {% if changelog_entry.bug_fixes != null %}
+        {% for bug_fix in changelog_entry.bug_fixes %}
+
+          <li><b>[Bug Fix]</b>&nbsp;{{ bug_fix.desc }}</li>
+
+        {% endfor %}
+      {% endif %}
+
+
+      {% if changelog_entry.other_changes != null %}
+        {% for other_change in changelog_entry.other_changes %}
+
+          <li>{{ other_change.desc }}</li>
+
+        {% endfor %}
+      {% endif %}
+
+    </ul>
+
+  </article>
+
+{% endfor %}

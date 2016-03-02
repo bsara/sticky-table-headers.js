@@ -1,0 +1,66 @@
+# Site Settings
+
+title:       Sticky-Table-Headers.js
+email:       bsara.dev@gmail.com
+description: Sticky table headers done right, with native JS & CSS
+
+
+url:           localhost:4000/
+
+
+prose:
+  siteurl: http://bsara.github.io/sticky-table-headers.js
+
+
+twitter_username: bsara_dev
+github_username:  bsara
+
+
+excerpt_separator: "" # Workaround for http://blog.slaks.net/2013-08-09/jekyll-tag-was-never-closed
+
+
+repo_base_url: https://github.com/bsara/sticky-table-headers.js
+src_base_url:  https://github.com/bsara/sticky-table-headers.js/blob
+
+
+collections:
+  project_pages:
+    output:    true
+    permalink: /:path/
+  docs:
+    output: true
+    permalink: /docs/:path/
+
+
+defaults:
+  - scope:
+      type: project_pages
+    values:
+      layout: page
+
+  - scope:
+      type: docs
+    values:
+      categories: docs
+      layout:     doc
+      type:       doc
+
+
+
+# Build settings
+
+markdown: rdiscount
+
+sass:
+  style: :compressed
+
+
+
+# Exlusions
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - CNAME
+  - README.md
