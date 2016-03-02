@@ -1,0 +1,56 @@
+//------------------------------//
+// Colors                       //
+//------------------------------//
+
+
+
+// Custom Colors
+// ---------------------------
+
+$color-black:  #000;
+$color-blue:   #2978ff;
+$color-green:  #00E70F;
+$color-grey:   #5F6165;
+$color-orange: #ff7513;
+$color-red:    #f61228;
+$color-yellow: #ffd213;
+$color-white:  #fff;
+
+
+
+// Palette
+// ---------------------------
+
+$color-primary:       #2978ff;
+$color-primary-light: lighten($color-primary, 10%);
+
+$color-accent:       #ff7513;
+$color-accent-light: lighten($color-accent, 10%);
+
+
+
+// States
+// ---------------------------
+
+$color-important: $color-accent;
+
+$color-error:   $color-red;
+$color-warning: $color-orange;
+$color-info:    $color-blue;
+
+$color-negative: $color-red;
+$color-positive: $color-green;
+$color-neutral:  $color-yellow;
+
+
+
+// Site
+// ---------------------------
+
+$color-text-primary:    #222;
+$color-text-secondary:  $color-grey;
+$color-text-link:       $color-primary;
+$color-text-link-hover: $color-primary-light;
+
+
+$color-bg: $color-white;

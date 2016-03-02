@@ -5,7 +5,8 @@ email:       bsara.dev@gmail.com
 description: Sticky table headers done right, with native JS & CSS
 
 
-url:           localhost:4000/
+baseurl: ''
+url:     localhost:4000/
 
 
 prose:
