@@ -3,7 +3,7 @@ The Code Project Open License (CPOL) 1.02
 
 
 
-Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
+Copyright (c) 2016 Brandon Sara (http://bsara.github.io)
 
 
 
