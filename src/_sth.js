@@ -8,7 +8,7 @@
  * @type {Object}
  * @readonly
  */
-var _sth = {
+let _sth = {
   /**
    * @private
    * @readonly
@@ -44,7 +44,7 @@ var _sth = {
 
     removeUnit: function(value) {
       if (value == null || typeof value !== 'string') {
-        throw new TypeError('`value` parameter must be a non-null/non-undefined string!');
+        throw new TypeError("'value' parameter must be a non-null/non-undefined string!");
       }
       return ((value.trim() === '') ? 0 : Number(value.trim().replace(/[a-z]*$/i, '')));
     }

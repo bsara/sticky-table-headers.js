@@ -47,9 +47,9 @@ function StickyTableHeaderManager() {
    * TODO: Add description
    */
   function init() {
-    var tableElements = document.querySelectorAll('table.' + _sth.constants.CSS_CLASS_NAME);
+    let tableElements = document.querySelectorAll('table.' + _sth.constants.CSS_CLASS_NAME);
 
-    for (var i = 0; i < tableElements.length; i++) {
+    for (let i = 0; i < tableElements.length; i++) {
       this.add(tableElements[i]);
     }
   }
@@ -89,7 +89,7 @@ function StickyTableHeaderManager() {
 
 
   function remove(tableElement) {
-    var index = _tableElements.indexOf(tableElement);
+    let index = _tableElements.indexOf(tableElement);
 
     if (index > -1) {
       disableStickyTableHeader(tableElement);
@@ -104,7 +104,7 @@ function StickyTableHeaderManager() {
    * TODO: Add description
    */
   function removeAll() {
-    for (var i = _tableElements.length; i >= 0; i--) {
+    for (let i = _tableElements.length; i >= 0; i--) {
       this.remove(i);
     }
   }
@@ -112,4 +112,4 @@ function StickyTableHeaderManager() {
 
 
 
-var _globalSTHManager = new StickyTableHeaderManager();
+let _globalSTHManager = new StickyTableHeaderManager();

@@ -3,7 +3,7 @@
 
   "browser": true,
   "devel": true,
-  "esnext": false,
+  "esnext": true,
   "predef": [
     "document",
     "window",

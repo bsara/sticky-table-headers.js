@@ -63,9 +63,9 @@ function disableStickyTableHeader(tableElement) {
  */
 function _validateElementParameter(paramName, param, nullable) {
   if (nullable !== true && param == null) {
-    throw new ReferenceError("`" + paramName + "` parameter cannot be `null` or `undefined`.");
+    throw new ReferenceError(`'${paramName} parameter cannot be 'null' or 'undefined'.`);
   }
   if (nullable === true && param != null && !(param instanceof HTMLElement)) {
-    throw new TypeError("`" + paramName + "` parameter must be an `HTMLElement`, but a `" + param.constructor.name + "` was given.");
+    throw new TypeError(`'${paramName}' parameter must be an 'HTMLElement', but a '${param.constructor.name}' was given.`);
   }
 }

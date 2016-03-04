@@ -13,268 +13,261 @@
 
 
 
-/**
- * TODO: Add description
- *
- * @param {(HTMLElement|StickyTableHeaderOptions)} tableElement|options - The table element to add a sticky
- *                                                                        header to or the options used to
- *                                                                        setup this object.
- * @param {HTMLElement} [scrollableElement] - The scrollable element containing the given `tableElement`.
- *
- * @throws {ReferenceError} If `tableElement` and `options.tableElement` are `null` or `undefined`.
- *
- * @constructor
- */
-function StickyTableHeader(options, scrollableElement) {
-  if (this.constructor !== StickyTableHeader) {
-    return new StickyTableHeader(options, scrollableElement);
-  }
+let StickyTableHeader = (function() {
 
-
-
-  /** @type {MutationObserver}
-   * @private
-   */
-  var _onChangeTableChildrenObserver;
+  // region Private Properties
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {MutationObserver}
    * @private
    */
-  var _onChangeTableScrollableElementSelectorObserver;
+  let _onChangeTableChildrenObserver = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
+   * @type {MutationObserver}
+   * @private
+   */
+  let _onChangeTableScrollableElementSelectorObserver = new WeakMap();
+
+  /**
+   * @memberOf {StickyTableHeader}
    * @type {Function}
    * @private
    */
-  var _onChange;
+  let _onChange = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {Function}
    * @private
    */
-  var _onChangeTableChildren;
+  let _onChangeTableChildren = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {Function}
    * @private
    */
-  var _onChangeTableScrollableElementSelector;
+  let _onChangeTableScrollableElementSelector = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {!Boolean}
    * @private
    */
-  var _includeCaption;
+  let _includeCaption = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {Object[]}
    * @private
    */
-  var _origHeaderStyleWidths;
+  let _origHeaderStyleWidths = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {HTMLElement}
    * @private
    */
-  var _$scrollable;
+  let _$scrollable = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {HTMLElement}
    * @private
    */
-  var _$table;
+  let _$table = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {?HTMLElement}
    * @private
    */
-  var _$tableCaption;
+  let _$tableCaption = new WeakMap();
 
   /**
+   * @memberOf {StickyTableHeader}
    * @type {HTMLElement}
    * @private
    */
-  var _$tableHeader;
+  let _$tableHeader = new WeakMap();
 
-
-
-
-  /**
-   * @constructs {StickyTableHeader}
-   * @private
-   */
-  ;(function ctor() {
-    // region Public Functions
-
-    this.destroy = destroy.bind(this);
-
-    Object.defineProperties(this, {
-      /** @type {!Boolean} */
-      includeCaption: {
-        get: _includeCaptionGetter,
-        set: _includeCaptionSetter
-      },
-
-      /** @type {HTMLElement} */
-      $scrollable: {
-        get: _$scrollableGetter,
-        set: _$scrollableSetter
-      },
-
-      /** @type {HTMLElement} */
-      $table: {
-        get: _$tableGetter,
-        set: _$tableSetter
-      }
-    });
-
-    // endregion
-
-    // region Event Handler Function Bindings
-
-    _onChange                               = _onChangeHandler.bind(this);
-    _onChangeTableChildren                  = _onChangeTableChildrenHandler.bind(this);
-    _onChangeTableScrollableElementSelector = _onChangeTableScrollableElementSelectorHandler.bind(this);
-
-    // endregion
-
-
-    options = (options || {});
-
-    if (options instanceof HTMLElement) {
-      options = { tableElement: options };
-    }
-
-
-    _origHeaderStyleWidths = [];
-
-    this.includeCaption = options.includeCaption;
-
-    this.$table      = options.tableElement;
-    this.$scrollable = (scrollableElement || options.scrollableElement);
-
-
-    _onChangeTableChildrenObserver = new MutationObserver(_onChangeTableChildren);
-    _onChangeTableChildrenObserver.observe(this.$table, { childList: true });
-
-    _onChangeTableScrollableElementSelectorObserver = new MutationObserver(_onChangeTableScrollableElementSelector);
-    _onChangeTableScrollableElementSelectorObserver.observe(this.$table, { attributes: true });
-  }).call(this);
-
+  // endregion
 
 
 
   /**
    * TODO: Add description
+   *
+   * @class
    */
-  function destroy() {
-    _onChangeTableChildrenObserver.disconnect();
-    _onChangeTableScrollableElementSelectorObserver.disconnect();
+  class StickyTableHeader {
+
+    /**
+     * @param {(HTMLElement|StickyTableHeaderOptions)} tableElement|options - The table element to add a sticky
+     *                                                                        header to or the options used to
+     *                                                                        setup this object.
+     * @param {HTMLElement} [scrollableElement] - The scrollable element containing the given `tableElement`.
+     *
+     * @throws {ReferenceError} If `tableElement` and `options.tableElement` are `null` or `undefined`.
+     *
+     * @constructor
+     */
+    constructor(options, scrollableElement) {
+      // region Event Handler Function Bindings
+
+      _onChange.set(this, _onChangeHandler.bind(this));
+      _onChangeTableChildren.set(this, _onChangeTableChildrenHandler.bind(this));
+      _onChangeTableScrollableElementSelector.set(this, _onChangeTableScrollableElementSelectorHandler.bind(this));
+
+      // endregion
 
 
-    _sth.helpers.removeEventListener(window, 'resize', _onChange);
+      options = (options || {});
 
-    if (this.$scrollable != null) {
-      _sth.helpers.removeEventListener(this.$scrollable, 'scroll', _onChange);
+      if (options instanceof HTMLElement) {
+        options = { tableElement: options };
+      }
+
+
+      _origHeaderStyleWidths.set(this, []);
+
+      this.includeCaption = options.includeCaption;
+
+      this.$table      = options.tableElement;
+      this.$scrollable = (scrollableElement || options.scrollableElement);
+
+
+      _onChangeTableChildrenObserver.set(this, new MutationObserver(_onChangeTableChildren.get(this)));
+      _onChangeTableChildrenObserver.observe(this.$table, { childList: true });
+
+      _onChangeTableScrollableElementSelectorObserver.set(this, new MutationObserver(_onChangeTableScrollableElementSelector.get(this)));
+      _onChangeTableScrollableElementSelectorObserver.observe(this.$table, { attributes: true });
     }
 
 
-    this.$table.classList.remove(_sth.constants.CSS_CLASS_NAME);
 
-    if (_$tableHeader != null) {
-      _$tableHeader.classList.remove(_sth.constants.CSS_CLASS_NAME);
+    /**
+     * TODO: Add description
+     */
+    destroy() {
+      _onChangeTableChildrenObserver.get(this).disconnect();
+      _onChangeTableScrollableElementSelectorObserver.get(this).disconnect();
+
+
+      _sth.helpers.removeEventListener(window, 'resize', _onChange.get(this));
+
+      if (this.$scrollable != null) {
+        _sth.helpers.removeEventListener(this.$scrollable, 'scroll', _onChange.get(this));
+      }
+
+
+      this.$table.classList.remove(_sth.constants.CSS_CLASS_NAME);
+
+      if (_$tableHeader.get(this) != null) {
+        _$tableHeader.get(this).classList.remove(_sth.constants.CSS_CLASS_NAME);
+      }
+
+
+      _onChangeTableChildrenObserver.delete(this);
+      _onChangeTableScrollableElementSelectorObserver.delete(this);
+
+      _origHeaderStyleWidths.delete(this);
+
+      _$table.delete(this);
+      _$scrollable.delete(this);
+      _$tableHeader.delete(this);
     }
 
 
-    _onChangeTableChildrenObserver                  = undefined;
-    _onChangeTableScrollableElementSelectorObserver = undefined;
+    // region Getters/Setters
 
-    _$table       = undefined;
-    _$scrollable  = undefined;
-    _$tableHeader = undefined;
-  }
-
-
-  /** @private */
-  function _includeCaptionGetter() {
-    return _includeCaption;
-  }
-
-
-  /** @private */
-  function _includeCaptionSetter(includeCaption) {
-    _includeCaption = (includeCaption === true);
-  }
-
-
-  /** @private */
-  function _$tableGetter() {
-    return _$table;
-  }
-
-
-  /** @private */
-  function _$tableSetter(tableElement) {
-    if (tableElement == null) {
-      throw new ReferenceError("`$table` cannot be `null` or `undefined`.");
+    /** @returns {!Boolean} TODO: Add description */
+    get includeCaption() {
+      return _includeCaption.get(this);
     }
 
-    _$table = tableElement;
 
-    if (!_$table.classList.contains(_sth.constants.CSS_CLASS_NAME)) {
-      _$table.classList.add(_sth.constants.CSS_CLASS_NAME);
+    /** @param {Boolean} value */
+    set includeCaption(value) {
+      _includeCaption.set(this, (value === true));
     }
 
-    _setTableCaption.call(this, _$table.querySelector('caption'));
-    _setTableHeader.call(this, _$table.querySelector('thead'));
+
+    /** @returns {?HTMLElement} TODO: Add description */
+    get $scrollable() {
+      return _$scrollable.get(this);
+    }
+
+
+    /** @returns {(HTMLElement|String)} value - TODO: Add description*/
+    set $scrollable(value) {
+      if (value == null) {
+        _setScrollableElementWithSelector.call(this);
+      } else {
+        _setScrollableElementWithElement.call(this, value);
+      }
+
+      if (_$scrollable.get(this) == null) {
+        _setScrollableElementWithElement.call(this, _findScrollableParent(this.$table));
+      }
+    }
+
+
+    /** @returns {?HTMLElement} TODO: Add description */
+    get $table() {
+      return _$table.get(this);
+    }
+
+
+    /** @param {!HTMLElement} value - TODO: Add description */
+    set $table(value) {
+      if (value == null) {
+        throw new ReferenceError("'$table' cannot be 'null' or 'undefined'.");
+      }
+
+      _$table.set(this, value);
+
+      if (!_$table.get(this).classList.contains(_sth.constants.CSS_CLASS_NAME)) {
+        _$table.get(this).classList.add(_sth.constants.CSS_CLASS_NAME);
+      }
+
+      _setTableCaption.call(this, _$table.get(this).querySelector('caption'));
+      _setTableHeader.call(this, _$table.get(this).querySelector('thead'));
+    }
+
+    // endregion
   }
 
 
-  /** @private */
-  function _$scrollableGetter() {
-    return _$scrollable;
-  }
-
-
-  /** @private */
-  function _$scrollableSetter(scrollableElement) {
-    if (scrollableElement == null) {
-      _setScrollableElementWithSelector.call(this);
-    } else {
-      _setScrollableElementWithElement.call(this, scrollableElement);
-    }
-
-    if (_$scrollable == null) {
-      _setScrollableElementWithElement.call(this, _findScrollableParent(this.$table));
-    }
-  }
-
+  // region Private Methods
 
   /** @private */
   function _setScrollableElementWithElement(scrollableElement) {
-    if (scrollableElement === _$scrollable) {
+    if (scrollableElement === _$scrollable.get(this)) {
       return;
     }
 
 
-    if (_$scrollable != null) {
-      _sth.helpers.removeEventListener(_$scrollable, 'scroll', _onChange);
-      _sth.helpers.removeEventListener(window, 'resize', _onChange);
+    if (_$scrollable.get(this) != null) {
+      _sth.helpers.removeEventListener(_$scrollable.get(this), 'scroll', _onChange.get(this));
+      _sth.helpers.removeEventListener(window, 'resize', _onChange.get(this));
     }
 
-    _$scrollable = scrollableElement;
+    _$scrollable.set(this, scrollableElement);
 
-    if (_$scrollable != null) {
-      _sth.helpers.addEventListener(_$scrollable, 'scroll', _onChange);
-      _sth.helpers.addEventListener(window, 'resize', _onChange);
+    if (_$scrollable.get(this) != null) {
+      _sth.helpers.addEventListener(_$scrollable.get(this), 'scroll', _onChange.get(this));
+      _sth.helpers.addEventListener(window, 'resize', _onChange.get(this));
     }
   }
 
 
   /** @private */
   function _setScrollableElementWithSelector() {
-    var scrollableElementSelector = this.$table.getAttribute(_sth.constants.SCROLLABLE_ELEMENT_SELECTOR_ATTR_NAME);
+    let scrollableElementSelector = this.$table.getAttribute(_sth.constants.SCROLLABLE_ELEMENT_SELECTOR_ATTR_NAME);
 
     if (scrollableElementSelector != null
           && typeof scrollableElementSelector === 'string'
@@ -290,8 +283,8 @@ function StickyTableHeader(options, scrollableElement) {
       return $el;
     }
 
-    var $parent             = $el.parentNode;
-    var parentComputedStyle = getComputedStyle($parent);
+    let $parent             = $el.parentNode;
+    let parentComputedStyle = getComputedStyle($parent);
 
     switch (parentComputedStyle.overflowY) {
       case 'auto':
@@ -305,43 +298,43 @@ function StickyTableHeader(options, scrollableElement) {
 
   /** @private */
   function _setTableCaption(tableCaptionElement) {
-    _$tableCaption = tableCaptionElement;
+    _$tableCaption.set(this, tableCaptionElement);
   }
 
 
   /** @private */
   function _setTableHeader(tableHeaderElement) {
-    _$tableHeader = tableHeaderElement;
+    _$tableHeader.set(this, tableHeaderElement);
   }
 
 
   /** @private */
   function _onChangeHandler() {
-    if (_$tableHeader == null) {
+    if (_$tableHeader.get(this) == null) {
       return;
     }
 
 
-    var captionExists = (_$tableCaption != null);
+    let captionExists = (_$tableCaption.get(this) != null);
 
-    var tablePositionTop = this.$table.getBoundingClientRect().top;
+    let tablePositionTop = this.$table.getBoundingClientRect().top;
 
-    var tableCaptionComputedStyle;
-    var tableCaptionDimens;
-    var tableCaptionMarginBottom;
+    let tableCaptionComputedStyle;
+    let tableCaptionDimens;
+    let tableCaptionMarginBottom;
 
-    var tableHeaderCells         = _$tableHeader.querySelectorAll('th');
-    var tableHeaderComputedStyle = getComputedStyle(_$tableHeader);
-    var tableHeaderMarginTop     = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('margin-top'));
+    let tableHeaderCells         = _$tableHeader.get(this).querySelectorAll('th');
+    let tableHeaderComputedStyle = getComputedStyle(_$tableHeader.get(this));
+    let tableHeaderMarginTop     = _sth.helpers.removeUnit(tableHeaderComputedStyle.getPropertyValue('margin-top'));
 
-    var scrollableElementBorderTopWidth = _sth.helpers.removeUnit(getComputedStyle(this.$scrollable).getPropertyValue('border-top-width'));
-    var scrollableElementTop            = this.$scrollable.getBoundingClientRect().top;
-    var scrollingThreshold              = tablePositionTop;
+    let scrollableElementBorderTopWidth = _sth.helpers.removeUnit(getComputedStyle(this.$scrollable).getPropertyValue('border-top-width'));
+    let scrollableElementTop            = this.$scrollable.getBoundingClientRect().top;
+    let scrollingThreshold              = tablePositionTop;
 
 
     if (captionExists) {
-      tableCaptionComputedStyle = getComputedStyle(_$tableCaption);
-      tableCaptionDimens        = _$tableCaption.getBoundingClientRect();
+      tableCaptionComputedStyle = getComputedStyle(_$tableCaption.get(this));
+      tableCaptionDimens        = _$tableCaption.get(this).getBoundingClientRect();
       tableCaptionMarginBottom  = _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('margin-bottom'));
 
       scrollingThreshold += _sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('margin-top'));
@@ -358,27 +351,27 @@ function StickyTableHeader(options, scrollableElement) {
 
     if (scrollingThreshold < scrollableElementTop) {
       if (captionExists && this.includeCaption) {
-        _setNewTopDimenForTopStickyElement(_$tableCaption, scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
-        _setNewLeftRightDimensForStickyElement(_$tableCaption, tableCaptionComputedStyle);
+        _setNewTopDimenForTopStickyElement(_$tableCaption.get(this), scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
+        _setNewLeftRightDimensForStickyElement(_$tableCaption.get(this), tableCaptionComputedStyle);
 
-        _$tableHeader.style.top = ((_sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('top'))
-                                    + tableCaptionDimens.height
-                                    + tableCaptionMarginBottom
-                                    + tableHeaderMarginTop) + 'px');
+        _$tableHeader.get(this).style.top = ((_sth.helpers.removeUnit(tableCaptionComputedStyle.getPropertyValue('top'))
+                                              + tableCaptionDimens.height
+                                              + tableCaptionMarginBottom
+                                              + tableHeaderMarginTop) + 'px');
       } else {
-        _setNewTopDimenForTopStickyElement(_$tableHeader, scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
+        _setNewTopDimenForTopStickyElement(_$tableHeader.get(this), scrollableElementTop, scrollableElementBorderTopWidth, tablePositionTop);
       }
 
-      _setNewLeftRightDimensForStickyElement(_$tableHeader, tableHeaderComputedStyle);
+      _setNewLeftRightDimensForStickyElement(_$tableHeader.get(this), tableHeaderComputedStyle);
 
 
       _processTableHeaderCells.call(this, tableHeaderCells);
 
 
       if (captionExists && this.includeCaption) {
-        _$tableCaption.classList.add(_sth.constants.CSS_CLASS_NAME);
+        _$tableCaption.get(this).classList.add(_sth.constants.CSS_CLASS_NAME);
       }
-      _$tableHeader.classList.add(_sth.constants.CSS_CLASS_NAME);
+      _$tableHeader.get(this).classList.add(_sth.constants.CSS_CLASS_NAME);
 
 
       return;
@@ -386,9 +379,9 @@ function StickyTableHeader(options, scrollableElement) {
 
 
     if (captionExists && this.includeCaption) {
-      _cleanupStickyElement(_$tableCaption);
+      _cleanupStickyElement(_$tableCaption.get(this));
     }
-    _cleanupStickyElement(_$tableHeader);
+    _cleanupStickyElement(_$tableHeader.get(this));
 
     _cleanupTableHeaderCellStyles(tableHeaderCells);
   }
@@ -402,8 +395,8 @@ function StickyTableHeader(options, scrollableElement) {
 
   /** @private */
   function _setNewLeftRightDimensForStickyElement($el, elComputedStyle) {
-    var elMarginRight      = _sth.helpers.removeUnit(elComputedStyle.getPropertyValue('margin-right'));
-    var elBorderRightWidth = _sth.helpers.removeUnit(elComputedStyle.getPropertyValue('border-right-width'));
+    let elMarginRight      = _sth.helpers.removeUnit(elComputedStyle.getPropertyValue('margin-right'));
+    let elBorderRightWidth = _sth.helpers.removeUnit(elComputedStyle.getPropertyValue('border-right-width'));
 
     $el.style.left  = elComputedStyle.getPropertyValue('margin-left');
     $el.style.right = ((elMarginRight - elBorderRightWidth) + 'px');
@@ -412,17 +405,17 @@ function StickyTableHeader(options, scrollableElement) {
 
   /** @private */
   function _processTableHeaderCells(tableHeaderCells) {
-    var tableBodyFirstRowCells        = this.$table.querySelectorAll('tbody > tr td');
-    var tableBodyFirstRowCellsIsEmpty = (tableBodyFirstRowCells == null || tableBodyFirstRowCells.length === 0);
-    var equalWidthAmount              = ((100 / tableHeaderCells.length) + '%');
+    let tableBodyFirstRowCells        = this.$table.querySelectorAll('tbody > tr td');
+    let tableBodyFirstRowCellsIsEmpty = (tableBodyFirstRowCells == null || tableBodyFirstRowCells.length === 0);
+    let equalWidthAmount              = ((100 / tableHeaderCells.length) + '%');
 
-    var isFirstTimeThrough = (_origHeaderStyleWidths.length === 0);
+    let isFirstTimeThrough = (_origHeaderStyleWidths.get(this).length === 0);
 
-    for (var i = 0; i < tableHeaderCells.length; i++) {
-      var $tableHeaderCell = tableHeaderCells[i];
+    for (let i = 0; i < tableHeaderCells.length; i++) {
+      let $tableHeaderCell = tableHeaderCells[i];
 
       if (isFirstTimeThrough) {
-        _origHeaderStyleWidths.push({
+        _origHeaderStyleWidths.get(this).push({
           width:    $tableHeaderCell.style.getPropertyValue('width'),
           priority: $tableHeaderCell.style.getPropertyPriority('width')
         });
@@ -434,13 +427,13 @@ function StickyTableHeader(options, scrollableElement) {
       }
 
 
-      var expectedNewWidth = _sth.helpers.removeUnit(getComputedStyle(tableBodyFirstRowCells[i]).getPropertyValue('width'));
+      let expectedNewWidth = _sth.helpers.removeUnit(getComputedStyle(tableBodyFirstRowCells[i]).getPropertyValue('width'));
 
 
       $tableHeaderCell.style.width = (expectedNewWidth + 'px');
 
 
-      var newWidth = $tableHeaderCell.getBoundingClientRect().width;
+      let newWidth = $tableHeaderCell.getBoundingClientRect().width;
 
       if (newWidth < expectedNewWidth) {
         $tableHeaderCell.style.width = ((expectedNewWidth + (expectedNewWidth - newWidth)) + 'px');
@@ -460,13 +453,13 @@ function StickyTableHeader(options, scrollableElement) {
 
   /** @private */
   function _cleanupTableHeaderCellStyles(tableHeaderCells) {
-    if (_origHeaderStyleWidths.length === 0) {
+    if (_origHeaderStyleWidths.get(this).length === 0) {
       return;
     }
 
-    for (var i = 0; i < tableHeaderCells.length; i++) {
-      var $tableHeaderCell = tableHeaderCells[i];
-      var origValues       = _origHeaderStyleWidths[i];
+    for (let i = 0; i < tableHeaderCells.length; i++) {
+      let $tableHeaderCell = tableHeaderCells[i];
+      let origValues       = _origHeaderStyleWidths.get(this)[i];
 
       if (origValues.width == null) {
         $tableHeaderCell.style.removeProperty('width');
@@ -476,23 +469,21 @@ function StickyTableHeader(options, scrollableElement) {
       $tableHeaderCell.style.setProperty('width', origValues.width, origValues.priority);
     }
 
-    _origHeaderStyleWidths.splice(0, _origHeaderStyleWidths.length);
+    _origHeaderStyleWidths.get(this).splice(0, _origHeaderStyleWidths.get(this).length);
   }
 
 
   /** @private */
   function _onChangeTableChildrenHandler(mutations) {
     mutations.forEach(function(mutation) {
-      var i;
-
-      for (i = 0; i < mutation.addedNodes.length; i++) {
+      for (let i = 0; i < mutation.addedNodes.length; i++) {
         if (mutation.addedNodes[i].nodeName === 'thead') {
           _setTableHeader.call(this, mutation.addedNodes[i]);
           break;
         }
       }
 
-      for (i = 0; i < mutation.removedNodes.length; i++) {
+      for (let i = 0; i < mutation.removedNodes.length; i++) {
         if (mutation.removedNodes[i].nodeName === 'thead') {
           _setTableHeader.call(this, undefined);
           break;
@@ -510,4 +501,10 @@ function StickyTableHeader(options, scrollableElement) {
       }
     });
   }
-}
+
+  // endregion
+
+
+
+  return StickyTableHeader;
+})();
