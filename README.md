@@ -1,5 +1,5 @@
 
-# sticky-table-headers.js [![Build Status](https://img.shields.io/travis/bsara/sticky-table-headers.js.svg)](https://travis-ci.org/bsara/sticky-table-headers.js.svg?branch=master)
+# sticky-table-headers.js [![Build Status](https://travis-ci.org/bsara/sticky-table-headers.js.svg?branch=master&style=flat-sqaure)](https://travis-ci.org/bsara/sticky-table-headers.js)
 
 
 [![CPOL v1.02 License](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/sticky-table-headers.js/blob/master/LICENSE.md)
