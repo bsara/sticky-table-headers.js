@@ -1,3 +1,8 @@
+## [v0.2.1](https://github.com/bsara/stickytableheaders.js/tree/v0.2.1) (2016-05-11)
+
+- Minor README updates.
+
+
 ## [v0.2.0](https://github.com/bsara/stickytableheaders.js/tree/v0.2.0) (2016-03-01)
 
 - **[Feature]** Added the ability to include table `caption` element as part of the sticky table header.
