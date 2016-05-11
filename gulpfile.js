@@ -154,7 +154,7 @@ gulp.task('build', function() {
 
   var scripts = merge(manualInitScripts, autoInitScripts)
                   .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
-                  .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
+                  .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|export(ed|s))\s.*?\*\/\s*\n/gmi, String.EMPTY))
                   .pipe(wrapUMD({
                     namespace: config.umd.namespace,
                     exports:   config.umd.exports
@@ -174,12 +174,12 @@ gulp.task('build', function() {
 
 
 gulp.task('rebuild', function(callback) {
-  runSequence('clean:build', 'build', callback);
+  return runSequence('clean:build', 'build', callback);
 });
 
 
 gulp.task('dist', [ 'clean:build', 'clean:dist' ],  function(callback) {
-  runSequence('lint', 'build', 'test', 'docs', function(err) {
+  return runSequence('lint', 'build', 'test', 'docs', function(err) {
     if (err) {
       callback(err);
       return;
