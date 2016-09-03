@@ -19,17 +19,17 @@ Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
 - **NPM:** `$ npm install --save sticky-table-headers.js`
 - **Bower:** `$ bower install --save sticky-table-headers.js`
 - **CDN - Auto Init (minified):**
-  - `<script src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.min.js"></script>`
-  - `<link type="text/css" src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.min.js"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css">`
 - **CDN - Auto Init (not minified):**
-  - `<script src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.js"></script>`
-  - `<link type="text/css" src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.js"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css">`
 - **CDN - Manual Init (minified):**
-  - `<script src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.js"></script>`
-  - `<link type="text/css" src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.js"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css">`
 - **CDN - Manual Init (not minified):**
-  - `<script src="//npmcdn.com/sticky-table-headers.js@0.2.1"></script>`
-  - `<link type="text/css" src="//npmcdn.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css">`
 - [**Download**](https://github.com/bsara/sticky-table-headers.js/releases)
 
 
