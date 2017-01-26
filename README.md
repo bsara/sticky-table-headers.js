@@ -7,6 +7,12 @@
 [![NPM Package](https://img.shields.io/npm/v/sticky-table-headers.js.svg?style=flat-square)](https://www.npmjs.com/package/sticky-table-headers.js)&nbsp;
 [![Bower Package](https://img.shields.io/bower/v/sticky-table-headers.js.svg?style=flat-square)](http://bower.io/search/?q=sticky-table-headers.js)
 
+> **IMPORTANT:** You can now create any element with sticky properties using the new CSS `position: sticky;` feature! While
+this library may continue to be a good option for older browsers, you should verify that the new CSS sticky feature
+does not meet your needs before using this library. That all said, this library will still continue to be supported
+for the forseeable future.
+
+>For more information about CSS sticky elements, check out [this short CSS-Tricks.com article](https://css-tricks.com/position-sticky-2/).
 
 Sticky table headers done right, with native JS and CSS, no extra libraries needed. This is a super easy-to-use library that can be used without writing a single bit of JavaScript yourself!
 
@@ -19,17 +25,17 @@ Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
 - **NPM:** `$ npm install --save sticky-table-headers.js`
 - **Bower:** `$ bower install --save sticky-table-headers.js`
 - **CDN - Auto Init (minified):**
-  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.min.js"></script>`
-  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.auto-init.min.js"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.min.css">`
 - **CDN - Auto Init (not minified):**
-  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.js"></script>`
-  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.auto-init.js"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.css">`
 - **CDN - Manual Init (minified):**
-  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.js"></script>`
-  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.min.js"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.min.css">`
 - **CDN - Manual Init (not minified):**
-  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.1"></script>`
-  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css">`
+  - `<script src="//unpkg.com/sticky-table-headers.js@0.2.2"></script>`
+  - `<link type="text/css" src="//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.css">`
 - [**Download**](https://github.com/bsara/sticky-table-headers.js/releases)
 
 

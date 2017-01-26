@@ -41,10 +41,17 @@
 
 
     <section>
-        <article><h1 id="sticky-table-headers-js-build-status-https-img-shields-io-travis-bsara-sticky-table-headers-js-svg-https-travis-ci-org-bsara-sticky-table-headers-js-style-flat-square-">sticky-table-headers.js <a href="https://travis-ci.org/bsara/sticky-table-headers.js?style=flat-square"><img src="https://img.shields.io/travis/bsara/sticky-table-headers.js.svg" alt="Build Status"></a></h1>
+        <article><h1 id="sticky-table-headers-js-build-status-https-travis-ci-org-bsara-sticky-table-headers-js-svg-branch-master-style-flat-sqaure-https-travis-ci-org-bsara-sticky-table-headers-js-">sticky-table-headers.js <a href="https://travis-ci.org/bsara/sticky-table-headers.js"><img src="https://travis-ci.org/bsara/sticky-table-headers.js.svg?branch=master&amp;style=flat-sqaure" alt="Build Status"></a></h1>
 <p><a href="https://github.com/bsara/sticky-table-headers.js/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square" alt="CPOL v1.02 License"></a></p>
 <p><a href="https://www.npmjs.com/package/sticky-table-headers.js"><img src="https://img.shields.io/npm/v/sticky-table-headers.js.svg?style=flat-square" alt="NPM Package"></a>&nbsp;
 <a href="http://bower.io/search/?q=sticky-table-headers.js"><img src="https://img.shields.io/bower/v/sticky-table-headers.js.svg?style=flat-square" alt="Bower Package"></a></p>
+<blockquote>
+<p><strong>IMPORTANT:</strong> You can now create any element with sticky properties using the new CSS <code>position: sticky;</code> feature! While
+this library may continue to be a good option for older browsers, you should verify that the new CSS sticky feature
+does not meet your needs before using this library. That all said, this library will still continue to be supported
+for the forseeable future.</p>
+<p>For more information about CSS sticky elements, check out <a href="https://css-tricks.com/position-sticky-2/">this short CSS-Tricks.com article</a>.</p>
+</blockquote>
 <p>Sticky table headers done right, with native JS and CSS, no extra libraries needed. This is a super easy-to-use library that can be used without writing a single bit of JavaScript yourself!</p>
 <p>Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.</p>
 <h2 id="install">Install</h2>
@@ -52,23 +59,23 @@
 <li><strong>NPM:</strong> <code>$ npm install --save sticky-table-headers.js</code></li>
 <li><strong>Bower:</strong> <code>$ bower install --save sticky-table-headers.js</code></li>
 <li><strong>CDN - Auto Init (minified):</strong><ul>
-<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.min.js&quot;&gt;&lt;/script&gt;</code></li>
-<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css&quot;&gt;</code></li>
+<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.auto-init.min.js&quot;&gt;&lt;/script&gt;</code></li>
+<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.min.css&quot;&gt;</code></li>
 </ul>
 </li>
 <li><strong>CDN - Auto Init (not minified):</strong><ul>
-<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.auto-init.js&quot;&gt;&lt;/script&gt;</code></li>
-<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css&quot;&gt;</code></li>
+<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.auto-init.js&quot;&gt;&lt;/script&gt;</code></li>
+<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.css&quot;&gt;</code></li>
 </ul>
 </li>
 <li><strong>CDN - Manual Init (minified):</strong><ul>
-<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.js&quot;&gt;&lt;/script&gt;</code></li>
-<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.min.css&quot;&gt;</code></li>
+<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.min.js&quot;&gt;&lt;/script&gt;</code></li>
+<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.min.css&quot;&gt;</code></li>
 </ul>
 </li>
 <li><strong>CDN - Manual Init (not minified):</strong><ul>
-<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1&quot;&gt;&lt;/script&gt;</code></li>
-<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.1/dist/sticky-table-headers.css&quot;&gt;</code></li>
+<li><code>&lt;script src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2&quot;&gt;&lt;/script&gt;</code></li>
+<li><code>&lt;link type=&quot;text/css&quot; src=&quot;//unpkg.com/sticky-table-headers.js@0.2.2/dist/sticky-table-headers.css&quot;&gt;</code></li>
 </ul>
 </li>
 <li><a href="https://github.com/bsara/sticky-table-headers.js/releases"><strong>Download</strong></a></li>
@@ -213,7 +220,7 @@ following (See <a href="http://bsara.github.io/sticky-table-headers.js/docs#sth"
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed May 11 2016 10:27:00 GMT-0600 (MDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed Jan 25 2017 17:26:54 GMT-0700 (MST)
 </footer>
 
 <script> prettyPrint(); </script>

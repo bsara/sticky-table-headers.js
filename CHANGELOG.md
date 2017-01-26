@@ -1,3 +1,10 @@
+## [v0.2.2](https://github.com/bsara/stickytableheaders.js/tree/v0.2.2) (2017-01-25)
+
+- **[Feature]** Added SCSS copies of CSS file for easy import into SCSS files.
+- Added disclaimer about using `position: sticky` CSS over this library added to README.
+
+
+
 ## [v0.2.1](https://github.com/bsara/stickytableheaders.js/tree/v0.2.1) (2016-05-11)
 
 - Minor README updates.

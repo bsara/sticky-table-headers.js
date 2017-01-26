@@ -158,17 +158,20 @@ gulp.task('build', function() {
                   .pipe(wrapUMD({
                     namespace: config.umd.namespace,
                     exports:   config.umd.exports
-                  }));
+                  }))
+                  .pipe(insert.prepend(config.fileHeader));
 
   var styles = gulp.src(path.join(config.src.dir, "**/*.css"))
                    .pipe(autoprefixer({
                      browsers: [ 'last 10 versions' ],
                      remove:   true
                    }))
-                   .pipe(rename({ basename: 'sticky-table-headers' }));
+                   .pipe(rename({ basename: 'sticky-table-headers' }))
+                   .pipe(insert.prepend(config.fileHeader))
+                   .pipe(gulp.dest(config.build.dir))
+                   .pipe(rename({ extname: '.scss' }));
 
   return merge(scripts, styles)
-          .pipe(insert.prepend(config.fileHeader))
           .pipe(gulp.dest(config.build.dir));
 });
 

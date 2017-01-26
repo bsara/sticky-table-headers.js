@@ -1,8 +1,8 @@
 /*!
- * sticky-table-headers.js (0.2.1)
+ * sticky-table-headers.js (0.2.2)
  *
- * Copyright (c) 2016 Brandon Sara (http://bsara.github.io)
- * Licensed under the CPOL-1.02 (https://github.com/bsara/stickytableheaders.js/blob/v0.2.1/LICENSE.md)
+ * Copyright (c) 2017 Brandon Sara (http://bsara.github.io)
+ * Licensed under the CPOL-1.02 (https://github.com/bsara/stickytableheaders.js/blob/v0.2.2/LICENSE.md)
  */
 
 
